@@ -18,8 +18,12 @@ public class Main {
         String dipendente2 = callCenter.addDipendente("Laura", "Bianchi", "2");
         System.out.println(dipendente2);
 
-        System.out.println( callCenter.call("1234567890"));
-       System.out.println(callCenter.call("0987654321"));
-       System.out.println(callCenter.call("1122334455"));
+        System.out.println(callCenter.call("1234567890"));
+        System.out.println(callCenter.call("0987654321"));
+        System.out.println(callCenter.call("1122334455"));
+        System.out.println(callCenter.call("1234567890"));
+        //System.out.println(callCenter.call("1122334455"));
+
+       callCenter.getAllTelefonate();
     }
 }

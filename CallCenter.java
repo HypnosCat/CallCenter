@@ -1,10 +1,11 @@
 import java.time.LocalDateTime;
 import java.util.HashMap;
+import java.util.TreeSet;
 
 public class CallCenter {
     private final HashMap<String , Clienti> clienti = new HashMap<String, Clienti>();
     private final HashMap<String , Dipendenti> dipendenti = new HashMap<String, Dipendenti>();
-    private final Info info = new Info();
+    private final TreeSet <Info> telefonate = new TreeSet<Info>();
 
     public String addCliente(String nome, String cognome , String telefono , String indirizzo, String citta , String codice){
         if (!clienti.containsKey(codice)){
@@ -24,16 +25,34 @@ public class CallCenter {
             return "Il Dipendente è già presente \n";
     }
 
+    public String removeCliente(String codice) {
+        if (clienti.containsKey(codice)) {
+            clienti.remove(codice); 
+            return "Dipendente cancellato: " +codice;
+        } else  
+            return "Dipendente non trovato:: " +codice;
+    }
+
+    public String removeDipendente(String codice){
+        if (dipendenti.containsKey(codice)) {
+            dipendenti.remove(codice);
+            return "Cliente cancellato: " +codice;
+        }else 
+            return "Cliente non trovato: " + codice;
+    }
+
     public String call(String numero) {
         String codiceCliente = codicecliente(numero);
-
         String codiceDipendente = assignDipendente();
-
         if (!codiceCliente.isEmpty() && !codiceDipendente.equals("Nessun dipendente disponibile")) {
-            updateLog(codiceCliente, codiceDipendente);
+            dipendenti.get(codiceDipendente).setDisponibile(false); 
+            Info newInfo = new Info();
+            updateLog(newInfo, codiceCliente, codiceDipendente);
+            telefonate.add(newInfo);
+            dipendenti.get(codiceDipendente).setDisponibile(true); 
+            return newInfo.toString() + "\n";
         }
-        dipendenti.get(codiceDipendente).setDisponibile(true);
-        return info.toString() + "\n";
+        return "Chiamata non riuscita: " + numero + "\n";
     }
 
     public String assignDipendente() {
@@ -46,11 +65,11 @@ public class CallCenter {
         return "Nessun dipendente disponibile";
     }
     
-    public void updateLog(String codiceCliente , String codiceDipendente){
-        info.setInfo(clienti.get(codiceCliente).getNome(),clienti.get(codiceCliente).getCognome()
-                , codiceCliente, clienti.get(codiceCliente).getIndirizzo(),clienti.get(codiceCliente).getCitta()
-                , clienti.get(codiceCliente).getTelefono(), lastCall(), dipendenti.get(codiceDipendente).getNome()
-                ,dipendenti.get(codiceDipendente).getCognome(), codiceDipendente);
+    public void updateLog(Info info, String codiceCliente, String codiceDipendente) {
+        info.setInfo(clienti.get(codiceCliente).getNome(), clienti.get(codiceCliente).getCognome(),
+                codiceCliente, clienti.get(codiceCliente).getIndirizzo(), clienti.get(codiceCliente).getCitta(),
+                clienti.get(codiceCliente).getTelefono(), lastCall(), dipendenti.get(codiceDipendente).getNome(),
+                dipendenti.get(codiceDipendente).getCognome(), codiceDipendente);
     }
 
     public String codicecliente(String numero){
@@ -64,7 +83,13 @@ public class CallCenter {
     }
 
     public LocalDateTime lastCall(){
-        LocalDateTime currentDateTime;
-        return currentDateTime = LocalDateTime.now();
+        return LocalDateTime.now();
+    }
+
+    public void getAllTelefonate() {
+        System.out.println("Log telefonate: \n");
+        for (Info info : telefonate) {
+            System.out.println(info);
+        }
     }
 }
