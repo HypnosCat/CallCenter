@@ -32,6 +32,20 @@ public class Info implements Comparable<Info> {
         this.codiceDipendente = codiceDipendente;
     }
 
+    
+
+    public String getCodiceCliente() {
+        return codiceCliente;
+    }
+
+    public LocalDateTime getLastCall() {
+        return lastCall;
+    }
+
+    public String getCodiceDipendente() {
+        return codiceDipendente;
+    }
+
     @Override
     public int compareTo(Info other) {
         return this.lastCall.compareTo(other.lastCall);

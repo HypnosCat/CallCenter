@@ -9,7 +9,7 @@ public class CallCenter {
 
     public String addCliente(String nome, String cognome , String telefono , String indirizzo, String citta , String codice){
         if (!clienti.containsKey(codice)){
-            Clienti clientie = new Clienti(nome, cognome, codice, indirizzo, citta, telefono);
+            Clienti clientie = new Clienti(nome, cognome, codice, indirizzo, citta, telefono, null);
             clienti.put(codice,clientie);
             return "Сliente aggiunto \n";
         }else
@@ -41,18 +41,34 @@ public class CallCenter {
             return "Cliente non trovato: " + codice;
     }
 
+
     public String call(String numero) {
         String codiceCliente = codicecliente(numero);
         String codiceDipendente = assignDipendente();
+    
         if (!codiceCliente.isEmpty() && !codiceDipendente.equals("Nessun dipendente disponibile")) {
-            dipendenti.get(codiceDipendente).setDisponibile(false); 
+            // Aggiorna l'ultima chiamata del cliente
+            clienti.get(codiceCliente).setLastCall(setLastCall(codiceCliente));
+            // Crea un nuovo oggetto Info per la chiamata
             Info newInfo = new Info();
             updateLog(newInfo, codiceCliente, codiceDipendente);
-            telefonate.add(newInfo);
-            dipendenti.get(codiceDipendente).setDisponibile(true); 
-            return newInfo.toString() + "\n";
+            telefonate.add(newInfo); // Aggiungi il nuovo oggetto Info a telefonate
+
+            dipendenti.get(codiceDipendente).setDisponibile(true);
+            return clienti.get(codiceCliente).toString() +"\n"+ dipendenti.get(codiceDipendente).toString();
         }
         return "Chiamata non riuscita: " + numero + "\n";
+    }
+
+    public LocalDateTime setLastCall(String codice){
+        for (Info info : telefonate) {
+            if (info.getCodiceCliente().equals(codice)) {
+                if (info.getLastCall()!= null) {
+                    return info.getLastCall();
+                }
+            }
+        }
+        return null;
     }
 
     public String assignDipendente() {

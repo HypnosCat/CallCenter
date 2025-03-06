@@ -1,3 +1,5 @@
+import java.time.LocalDateTime;
+
 public class Clienti {
     private String nome;
     private String cognome;
@@ -5,14 +7,17 @@ public class Clienti {
     private String indirizzo;
     private String citta;
     private String telefono;
+    private LocalDateTime lastCall;
 
-    public Clienti(String nome, String cognome, String codice, String indirizzo, String citta, String telefono) {
+    public Clienti(String nome, String cognome, String codice, String indirizzo, String citta, String telefono, LocalDateTime ultimaChiamata) {
         this.nome = nome;
         this.cognome = cognome;
         this.codice = codice;
         this.indirizzo = indirizzo;
         this.citta = citta;
         this.telefono = telefono;
+        this.lastCall = ultimaChiamata;
+
     }
 
     public String getNome() {
@@ -62,4 +67,26 @@ public class Clienti {
     public void setTelefono(String telefono) {
         this.telefono = telefono;
     }
+
+    public LocalDateTime getLastCall() {
+        return lastCall;
+    }
+
+    public void setLastCall(LocalDateTime lastCall) {
+        this.lastCall = lastCall;
+    }
+
+    @Override
+    public String toString() {
+        return  "nome Cliente: " + nome + '\n' +
+                "cognome Cliente: " + cognome + '\n' +
+                "codice Cliente: " + codice + '\n' +
+                "indirizzo Cliente: " + indirizzo + '\n' +
+                "citta Cliente: " + citta + '\n' +
+                "telefono Cliente: " + telefono + '\n' +
+                "ultima chiamata: " + lastCall;
+    }
+
+    
+    
 }

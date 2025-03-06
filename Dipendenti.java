@@ -45,8 +45,8 @@ public class Dipendenti {
 
     @Override
     public String toString() {
-        return "nome: " + nome+
-                " cognome: " + cognome +
-                " codice: " + codice ;
+        return  "nome Dipendente: " + nome + '\n' +
+                "cognome Dipendente: " + cognome + '\n' +
+                "codice Dipendente: " + codice + '\n' ;
     }
 }
